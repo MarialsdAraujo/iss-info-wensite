@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>ISS Tracker</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+
+    <!-- Background and Card Styling -->
+    <style>
+        /* Background layout*/
+        #bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        #bg .visible {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background: none !important;
+        }
+        /* Card layout */
+        .info-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            max-width: 1200px;
+            max-height: 500px
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95); /* Semi-transparent to see background */
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 250px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            color: #080808;
+            text-align: center;
+        }
+        .card img {
+            max-width: 120px;
+            margin-top: 1rem;
+        }
+        h1 {
+            color: #fff;
+        }
+        h2 {
+            color: #000;
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+    <!-- Background Container -->
+    <div id="bg">
+        <div class="visible top"        style="background-image: url('{{ url_for('static', filename='images/bg01.jpg') }}');
+        background-size: cover;
+        background-position: center;
+        filter: brightness(0.4) blur(1px);"></div>
+    <!-- <div class="visible" style="background-image: url('{{ url_for('static', filename='images/bg02.jpg') }}'); background-size: cover; background-position: center; opacity: 0.3; visibility: visible;"></div> -->
+    </div>
+
+    <!-- Header -->
+    <header id="header" style="position: relative; z-index: 2;">
+        <h1>ISS Live Tracker</h1><p>Real-time position, weather, and country data from above Earth 🌍🛰</p>
+    </header>
+
+    <!-- Main Info Cards -->
+    <section id="main" class="wrapper" style="position: relative; z-index: 2;">
+        <div class="inner info-cards">
+<!-- Cards for ISS Location, Weather, Country, and Distance -->
+            <div class="card"> 
+                <h2>📍 ISS Location</h2>
+                <p>Latitude: {{ latitude }}</p>
+                <p>Longitude: {{ longitude }}</p>
+            </div>
+
+            <div class="card">
+                <h2>🌤 Weather</h2>
+                <p>{{ temperature }} °C</p>
+                <p>{{ weather_description }}</p>
+            </div>
+            <div class="card">
+                <h2>🌍 Country </h2>
+                <p>Country: {{ location_info.country }}</p>
+                <p>Locality: {{ location_info.locality }}</p>
+                <p>Region: {{ location_info.region }}</p>
+                <p>Population: {{ location_info.population }}</p>
+                {% if location_info.flag %} <!-- If a flag is available -->
+                    <img src="{{ location_info.flag }}" alt="Flag or Ocean" />
+                {% else %} <!-- If no flag is available -->
+                    <p><em>No flag available</em></p>
+                {% endif %} <!-- End of flag check -->
+            </div>
+
+            <div class="card">
+                <h2>📏 Distance</h2>
+                <p>{{ distance_km }} km from</p>
+                <p>{{ actual_location }}</p>
+                <img src="{{ actual_location_flag }}" alt="My Location Flag" style="width: 80px; margin-top: 10px;"/>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" style="position: relative; z-index: 2;">
+        <ul class="icons">
+            <li><a href="http://open-notify.org/Open-Notify-API/ISS-Location-Now/" target="_blank" class="icon solid fa-satellite">
+                    <span class="label">ISS Location API</span></a></li>
+            <li><a href="https://openweathermap.org/api" target="_blank" class="icon solid fa-cloud-sun">
+                    <span class="label">Weather API</span></a></li>
+            <li><a href="https://restcountries.com/" target="_blank" class="icon solid fa-flag">
+                    <span class="label">Countries API</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; Maria Luiza de Araujo</li>
+            <li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>
+            </ul>
+    </footer>
+    
+    <!-- Scripts -->
+        <script src="assets/js/main.js"></script>
+</body>
+</html>
