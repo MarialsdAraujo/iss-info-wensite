@@ -1,136 +1,145 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
-    <title>ISS Tracker</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
-
-    <!-- Background and Card Styling -->
-    <style>
-        /* Background layout*/
-        #bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        #bg .visible {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        body {
-            background: none !important;
-        }
-        /* Card layout */
-        .info-cards {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 2rem;
-            max-width: 1200px;
-            max-height: 500px
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.95); /* Semi-transparent to see background */
-            padding: 2rem;
-            border-radius: 1rem;
-            width: 250px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            color: #080808;
-            text-align: center;
-        }
-        .card img {
-            max-width: 120px;
-            margin-top: 1rem;
-        }
-        h1 {
-            color: #fff;
-        }
-        h2 {
-            color: #000;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <title>ISS Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- troque url_for por caminho relativo -->
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* Background layout*/
+    #bg{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;overflow:hidden;}
+    #bg .visible{position:absolute;width:100%;height:100%;}
+    body{background:none!important;}
+    /* Cards */
+    .info-cards{
+      display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;margin-top:2rem;
+      max-width:1200px;max-height:500px; /* <-- faltava ; */
+      margin-left:auto;margin-right:auto;
+    }
+    .card{background:rgba(255,255,255,.95);padding:2rem;border-radius:1rem;width:250px;
+      box-shadow:0 4px 10px rgba(0,0,0,.3);color:#080808;text-align:center;}
+    .card img{max-width:120px;margin-top:1rem;}
+    h1{color:#fff;} h2{color:#000;}
+  </style>
 </head>
-<body class="is-preload">
+<body>
 
-    <!-- Background Container -->
-    <div id="bg">
-        <div class="visible top"        style="background-image: url('{{ url_for('static', filename='images/bg01.jpg') }}');
-        background-size: cover;
-        background-position: center;
-        filter: brightness(0.4) blur(1px);"></div>
-    <!-- <div class="visible" style="background-image: url('{{ url_for('static', filename='images/bg02.jpg') }}'); background-size: cover; background-position: center; opacity: 0.3; visibility: visible;"></div> -->
+  <!-- Background -->
+  <div id="bg">
+    <!-- troque url_for por caminho relativo -->
+    <div class="visible top"
+      style="background-image:url('images/bg01.jpg');
+             background-size:cover;background-position:center;
+             filter:brightness(0.4) blur(1px);"></div>
+  </div>
+
+  <header id="header" style="position:relative;z-index:2;">
+    <h1>ISS Live Tracker</h1>
+    <p>Real-time position, weather, and country data from above Earth 🌍🛰</p>
+  </header>
+
+  <section id="main" class="wrapper" style="position:relative;z-index:2;">
+    <div class="inner info-cards">
+      <div class="card">
+        <h2>📍 ISS Location</h2>
+        <p>Latitude: <span id="lat">--</span></p>
+        <p>Longitude: <span id="lon">--</span></p>
+      </div>
+
+      <div class="card">
+        <h2>🌤 Weather</h2>
+        <p><span id="temp">--</span> °C</p>
+        <p id="weather_desc">--</p>
+      </div>
+
+      <div class="card">
+        <h2>🌍 Country</h2>
+        <p>Country: <span id="country">--</span></p>
+        <p>Locality: <span id="locality">--</span></p>
+        <p>Region: <span id="region">--</span></p>
+        <p>Population: <span id="population">--</span></p>
+        <img id="flag" alt="Flag or Ocean" style="display:none;width:80px;margin-top:10px;">
+        <p id="no-flag" style="display:none;"><em>No flag available</em></p>
+      </div>
+
+      <div class="card">
+        <h2>📏 Distance</h2>
+        <p><span id="distance">--</span> km from</p>
+        <p id="myplace">--</p>
+        <img id="myflag" alt="My Location Flag" style="width:80px;margin-top:10px;display:none;">
+      </div>
     </div>
+  </section>
 
-    <!-- Header -->
-    <header id="header" style="position: relative; z-index: 2;">
-        <h1>ISS Live Tracker</h1><p>Real-time position, weather, and country data from above Earth 🌍🛰</p>
-    </header>
+  <footer id="footer" style="position:relative;z-index:2;">
+    <ul class="icons">
+      <li><a href="http://open-notify.org/Open-Notify-API/ISS-Location-Now/" target="_blank">ISS Location API</a></li>
+      <li><a href="https://openweathermap.org/api" target="_blank">Weather API</a></li>
+      <li><a href="https://restcountries.com/" target="_blank">Countries API</a></li>
+    </ul>
+    <ul class="copyright">
+      <li>&copy; Maria Luiza de Araujo</li>
+      <li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>
+    </ul>
+  </footer>
 
-    <!-- Main Info Cards -->
-    <section id="main" class="wrapper" style="position: relative; z-index: 2;">
-        <div class="inner info-cards">
-<!-- Cards for ISS Location, Weather, Country, and Distance -->
-            <div class="card"> 
-                <h2>📍 ISS Location</h2>
-                <p>Latitude: {{ latitude }}</p>
-                <p>Longitude: {{ longitude }}</p>
-            </div>
+  <!-- seu JS principal (se existir) -->
+  <script src="assets/js/main.js"></script>
 
-            <div class="card">
-                <h2>🌤 Weather</h2>
-                <p>{{ temperature }} °C</p>
-                <p>{{ weather_description }}</p>
-            </div>
-            <div class="card">
-                <h2>🌍 Country </h2>
-                <p>Country: {{ location_info.country }}</p>
-                <p>Locality: {{ location_info.locality }}</p>
-                <p>Region: {{ location_info.region }}</p>
-                <p>Population: {{ location_info.population }}</p>
-                {% if location_info.flag %} <!-- If a flag is available -->
-                    <img src="{{ location_info.flag }}" alt="Flag or Ocean" />
-                {% else %} <!-- If no flag is available -->
-                    <p><em>No flag available</em></p>
-                {% endif %} <!-- End of flag check -->
-            </div>
+  <!-- JS para buscar dados no cliente -->
+  <script>
+    async function loadISS(){
+      const iss = await fetch('https://api.wheretheiss.at/v1/satellites/25544').then(r=>r.json());
+      document.getElementById('lat').textContent = iss.latitude.toFixed(4);
+      document.getElementById('lon').textContent = iss.longitude.toFixed(4);
+      return {lat: iss.latitude, lon: iss.longitude};
+    }
 
-            <div class="card">
-                <h2>📏 Distance</h2>
-                <p>{{ distance_km }} km from</p>
-                <p>{{ actual_location }}</p>
-                <img src="{{ actual_location_flag }}" alt="My Location Flag" style="width: 80px; margin-top: 10px;"/>
-            </div>
-        </div>
-    </section>
+    async function loadWeather(lat, lon){
+      const key = 'SUA_OPENWEATHER_KEY_AQUI';
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${key}`;
+      const w = await fetch(url).then(r=>r.json());
+      document.getElementById('temp').textContent = Math.round(w.main.temp);
+      document.getElementById('weather_desc').textContent = w.weather?.[0]?.description ?? '--';
+    }
 
-    <!-- Footer -->
-    <footer id="footer" style="position: relative; z-index: 2;">
-        <ul class="icons">
-            <li><a href="http://open-notify.org/Open-Notify-API/ISS-Location-Now/" target="_blank" class="icon solid fa-satellite">
-                    <span class="label">ISS Location API</span></a></li>
-            <li><a href="https://openweathermap.org/api" target="_blank" class="icon solid fa-cloud-sun">
-                    <span class="label">Weather API</span></a></li>
-            <li><a href="https://restcountries.com/" target="_blank" class="icon solid fa-flag">
-                    <span class="label">Countries API</span></a></li>
-        </ul>
-        <ul class="copyright">
-            <li>&copy; Maria Luiza de Araujo</li>
-            <li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>
-            </ul>
-    </footer>
-    
-    <!-- Scripts -->
-        <script src="assets/js/main.js"></script>
+    // Exemplo simples de reverse geocode + país (use seu provedor preferido)
+    async function loadCountry(lat, lon){
+      // BigDataCloud/LocationIQ/OpenCage/Nominatim — escolha um e ajuste a URL/chave.
+      const g = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`).then(r=>r.json());
+      const country = g.address?.country || 'Ocean';
+      const region = g.address?.state || '--';
+      const city = g.address?.city || g.address?.town || g.address?.village || '--';
+      document.getElementById('country').textContent = country;
+      document.getElementById('region').textContent = region;
+      document.getElementById('locality').textContent = city;
+
+      // Flag via REST Countries (pode não existir para oceano)
+      const ccode = g.address?.country_code;
+      if(ccode){
+        const r = await fetch(`https://restcountries.com/v3.1/alpha/${ccode}`).then(r=>r.json());
+        const info = Array.isArray(r) ? r[0] : null;
+        if(info){
+          document.getElementById('population').textContent = info.population?.toLocaleString() ?? '--';
+          const flagUrl = info.flags?.png || info.flags?.svg;
+          if(flagUrl){
+            const img = document.getElementById('flag');
+            img.src = flagUrl; img.style.display = 'inline-block';
+          } else { document.getElementById('no-flag').style.display = 'block'; }
+        }
+      } else {
+        document.getElementById('no-flag').style.display = 'block';
+      }
+    }
+
+    async function main(){
+      const {lat, lon} = await loadISS();
+      loadWeather(lat, lon);
+      loadCountry(lat, lon);
+      // TODO: calcular distância e preencher #distance, #myplace, #myflag
+    }
+    main();
+  </script>
 </body>
 </html>
